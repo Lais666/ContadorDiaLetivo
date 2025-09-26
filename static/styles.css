@@ -1,0 +1,100 @@
+/* Tema sofisticado em off-white, preto e cinza */
+:root {
+  --bg: #f5f5f5;       /* off-white */
+  --card: #ffffff;     /* branco puro */
+  --text: #111111;     /* preto intenso */
+  --muted: #555555;    /* cinza médio */
+  --border: #e5e5e5;   /* cinza claro */
+  --radius: 12px;
+  --shadow: 0 4px 12px rgba(0,0,0,0.05);
+  font-family: "Segoe UI", Roboto, sans-serif;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.topbar {
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 24px;
+}
+
+.topbar h1 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.content {
+  flex: 1;
+  max-width: 1000px;
+  margin: 24px auto;
+  padding: 0 16px;
+  display: grid;
+  gap: 24px;
+}
+
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 24px;
+  border: 1px solid var(--border);
+}
+
+.card h2, .card h3 {
+  margin-top: 0;
+  color: var(--text);
+  font-weight: 600;
+}
+
+.highlight {
+  text-align: center;
+}
+
+.big-number {
+  font-size: 64px;
+  font-weight: bold;
+  color: #222222; /* preto forte */
+  margin: 20px 0;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.holiday-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.holiday-list li {
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+  color: var(--text);
+}
+
+.holiday-list li:last-child {
+  border-bottom: none;
+}
+
+.footer {
+  text-align: center;
+  padding: 16px;
+  font-size: 13px;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+  background: #fafafa;
+}

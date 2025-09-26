@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Contador de Dias Letivos</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="layout">
+    <header class="topbar">
+      <h1>📚 Contador de Dias Letivos</h1>
+    </header>
+
+    <main class="content">
+      <section class="card highlight">
+        <h2>Dias letivos restantes</h2>
+        <div id="contador" class="big-number">--</div>
+        <p id="periodo" class="muted"></p>
+      </section>
+
+      <section class="card">
+        <h3>Distribuição por mês</h3>
+        <canvas id="graficoMeses"></canvas>
+      </section>
+
+    <footer class="footer">
+      <p>Baseado no calendário letivo até <span id="data-alvo"></span>.</p>
+    </footer>
+  </div>
+
+  <script>
+    async function carregarDias() {
+      const res = await fetch("/api/dias");
+      const data = await res.json();
+
+      document.getElementById("data-alvo").textContent =
+        new Date(data.target).toLocaleDateString("pt-BR");
+
+      const contador = document.getElementById("contador");
+      const periodo = document.getElementById("periodo");
+
+      if (data.finished) {
+        contador.textContent = "✔️ Período encerrado";
+        periodo.textContent = "";
+      } else {
+        contador.textContent = data.days_left;
+        periodo.textContent = `De ${new Date(data.today).toLocaleDateString("pt-BR")} até ${new Date(data.target).toLocaleDateString("pt-BR")}`;
+      }
+
+      const lista = document.getElementById("lista-feriados");
+      lista.innerHTML = "";
+      if (data.holidays.length === 0) {
+        lista.innerHTML = "<li>Nenhum feriado cadastrado.</li>";
+      } else {
+        data.holidays.forEach(h => {
+          const li = document.createElement("li");
+          li.textContent = new Date(h).toLocaleDateString("pt-BR", {
+            weekday:"long", day:"2-digit", month:"2-digit", year:"numeric"
+          });
+          lista.appendChild(li);
+        });
+      }
+    }
+
+    async function carregarGrafico() {
+      const res = await fetch("/api/meses");
+      const meses = await res.json();
+
+      const ctx = document.getElementById("graficoMeses").getContext("2d");
+      new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: Object.keys(meses),
+          datasets: [{
+            label: "Dias Letivos",
+            data: Object.values(meses),
+            backgroundColor: "#4f46e5",
+            borderRadius: 6
+          }]
+        },
+        options: {
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { grid: { color: "rgba(255,255,255,0.1)" } },
+            y: { grid: { color: "rgba(255,255,255,0.1)" }, beginAtZero: true }
+          }
+        }
+      });
+    }
+
+    carregarDias();
+    carregarGrafico();
+  </script>
+</body>
+</html>

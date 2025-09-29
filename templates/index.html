@@ -10,28 +10,53 @@
 <body>
   <div class="layout">
 
-    <!-- Topbar clean -->
+    <!-- Topbar -->
     <header class="topbar">
       <h1>📚 Contador de Dias Letivos</h1>
     </header>
 
     <!-- Conteúdo -->
-    <main class="content">
-  <div class="grid-cards">
-    <section class="card highlight">
-      <h2>Dias letivos restantes</h2>
-      <div id="contador" class="big-number">--</div>
-      <p id="periodo" class="muted"></p>
-    </section>
+    <main>
+      <div class="grid-cards">
+        <!-- Dias totais -->
+        <section class="card highlight">
+          <h2>Dias letivos restantes</h2>
+          <div id="contador" class="big-number">--</div>
+          <p id="periodo" class="muted"></p>
+        </section>
 
-    <section class="card">
-      <h3>Distribuição por mês</h3>
-      <canvas id="graficoMeses"></canvas>
-    </section>
-  </div>
-</main>
+        <!-- Turmas especiais -->
+        <section class="card">
+          <h3>Contagem por turmas</h3>
+          <div class="turma-grid">
+            <div class="turma-box">
+              <h4>1º Termo 2024</h4>
+              <p class="dias"><strong id="segTer">--</strong> dias</p>
+              <div class="dias-semana">
+                <span>Segunda</span>
+                <span>Terça</span>
+              </div>
+            </div>
+            <div class="turma-box">
+              <h4>1º Termo 2025</h4>
+              <p class="dias"><strong id="quiSex">--</strong> dias</p>
+              <div class="dias-semana">
+                <span>Quinta</span>
+                <span>Sexta</span>
+              </div>
+            </div>
+          </div>
+        </section>
 
-    <!-- Rodapé discreto -->
+        <!-- Distribuição mensal -->
+        <section class="card">
+          <h3>Distribuição por mês</h3>
+          <canvas id="graficoMeses"></canvas>
+        </section>
+      </div>
+    </main>
+
+    <!-- Rodapé -->
     <footer class="footer">
       <p>Baseado no calendário letivo de 2025 até <span id="data-alvo"></span>.</p>
     </footer>
@@ -39,12 +64,20 @@
   </div>
 
   <script>
+    function parseLocalDate(isoDate) {
+      const [year, month, day] = isoDate.split("-").map(Number);
+      return new Date(year, month - 1, day);
+    }
+
     async function carregarDias() {
       const res = await fetch("/api/dias");
       const data = await res.json();
 
+      const alvo = parseLocalDate(data.target);
+      const hoje = parseLocalDate(data.today);
+
       document.getElementById("data-alvo").textContent =
-        new Date(data.target).toLocaleDateString("pt-BR");
+        alvo.toLocaleDateString("pt-BR");
 
       const contador = document.getElementById("contador");
       const periodo = document.getElementById("periodo");
@@ -54,8 +87,12 @@
         periodo.textContent = "Período encerrado";
       } else {
         contador.textContent = data.days_left;
-        periodo.textContent = `De ${new Date(data.today).toLocaleDateString("pt-BR")} até ${new Date(data.target).toLocaleDateString("pt-BR")}`;
+        periodo.textContent =
+          `De ${hoje.toLocaleDateString("pt-BR")} até ${alvo.toLocaleDateString("pt-BR")}`;
       }
+
+      document.getElementById("segTer").textContent = data.seg_ter;
+      document.getElementById("quiSex").textContent = data.qui_sex;
     }
 
     async function carregarGrafico() {

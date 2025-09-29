@@ -1,100 +1,78 @@
-/* Tema sofisticado em off-white, preto e cinza */
-:root {
-  --bg: #f5f5f5;       /* off-white */
-  --card: #ffffff;     /* branco puro */
-  --text: #111111;     /* preto intenso */
-  --muted: #555555;    /* cinza médio */
-  --border: #e5e5e5;   /* cinza claro */
-  --radius: 12px;
-  --shadow: 0 4px 12px rgba(0,0,0,0.05);
-  font-family: "Segoe UI", Roboto, sans-serif;
+body {
+  font-family: 'Inter', sans-serif;
+  background: #f9fafb;
+  margin: 0;
+  color: #111827;
 }
 
-body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--text);
+body, html {
+  height: 100%;
 }
 
 .layout {
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
 }
 
 .topbar {
-  background: var(--card);
-  border-bottom: 1px solid var(--border);
+  background: #fff;
   padding: 16px 24px;
+  border-bottom: 1px solid #e5e7eb;
 }
 
 .topbar h1 {
+  font-size: 20px;
   margin: 0;
-  font-size: 22px;
-  font-weight: 600;
-  color: var(--text);
+  color: #111827;
 }
 
+/* Centralização vertical com grid */
 .content {
   flex: 1;
-  max-width: 1000px;
-  margin: 24px auto;
-  padding: 0 16px;
   display: grid;
+  place-items: center;   /* centraliza tudo no meio da tela */
+  padding: 32px 16px;
+}
+
+.grid-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 24px;
+  width: 100%;
+  max-width: 1100px;
 }
 
 .card {
-  background: var(--card);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
   padding: 24px;
-  border: 1px solid var(--border);
-}
-
-.card h2, .card h3 {
-  margin-top: 0;
-  color: var(--text);
-  font-weight: 600;
 }
 
 .highlight {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
 }
 
 .big-number {
-  font-size: 64px;
+  font-size: 72px;
   font-weight: bold;
-  color: #222222; /* preto forte */
-  margin: 20px 0;
+  margin: 16px 0;
+  color: #111827;
 }
 
 .muted {
-  color: var(--muted);
-}
-
-.holiday-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.holiday-list li {
-  padding: 8px 0;
-  border-bottom: 1px solid var(--border);
-  font-size: 14px;
-  color: var(--text);
-}
-
-.holiday-list li:last-child {
-  border-bottom: none;
+  color: #6b7280;
 }
 
 .footer {
+  margin-top: auto;
   text-align: center;
-  padding: 16px;
-  font-size: 13px;
-  color: var(--muted);
-  border-top: 1px solid var(--border);
-  background: #fafafa;
+  padding: 1rem;
+  font-size: 0.9rem;
+  color: #666;
 }
